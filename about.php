@@ -78,7 +78,7 @@ $is_logged_in = isset($_SESSION['C_username']) && isset($_SESSION['client_id']);
     <div class="col-lg-5 col-md-5 mb-4 text-center order-lg-2 order-md-1 order-1">
       <img src="IMG/show/asrt.jpg" class="img-fluid rounded shadow" alt="About Us Image">
       <p class="mt-3 fw-semibold">
-        Miss Alice R. Tolentino and Sir Romeo S. Tolentino, the proud owners of ASRT Business
+        The proud owners of ASRT Business
       </p>
     </div>
   </div>
