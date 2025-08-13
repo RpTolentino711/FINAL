@@ -24,6 +24,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors[] = "Invalid email format.";
     }
+    // Ensure phone number is exactly 11 digits and only numeric
+    if (!preg_match('/^\d{11}$/', $phone)) {
+        $errors[] = "Phone number must be exactly 11 digits and numbers only.";
+    }
+    // Password must contain at least one uppercase and one special character
+    if (!preg_match('/[A-Z]/', $password) || !preg_match('/[\W_]/', $password)) {
+        $errors[] = "Password must contain at least one uppercase letter and one special character.";
+    }
     if ($db->checkClientCredentialExists('C_username', $username)) {
         $errors[] = "Username already exists.";
     }

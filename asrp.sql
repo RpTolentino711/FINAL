@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 09, 2025 at 10:46 PM
+-- Generation Time: Aug 13, 2025 at 07:02 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,7 +43,7 @@ CREATE TABLE `client` (
 --
 
 INSERT INTO `client` (`Client_ID`, `Client_fn`, `Client_ln`, `Client_Email`, `Client_Phone`, `C_username`, `C_password`, `Status`) VALUES
-(30, 'Luke', 'Tolentino', 'gabrialnakupa@gmail.com', '09668257301', '111', '$2y$10$ObTeRIbMOMly/T0tU92MBuwruDMLpeEmwDy0m0XhybHZl4IfUs23W', 'Active');
+(32, 'Luke', 'Tolentino', 'dadada@gmail.com', '09668257301', '111', '$2y$10$9zovzj.wzOLwPL90b3fQUuGzPQ98w8EkpChzHvDoEWzkWjiMaYW2O', 'Active');
 
 -- --------------------------------------------------------
 
@@ -58,6 +58,13 @@ CREATE TABLE `clientfeedback` (
   `Comments` text DEFAULT NULL,
   `Dates` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `clientfeedback`
+--
+
+INSERT INTO `clientfeedback` (`Feedback_ID`, `CS_ID`, `Rating`, `Comments`, `Dates`) VALUES
+(20, 1155, 5, 'adadwad', '2025-08-10');
 
 -- --------------------------------------------------------
 
@@ -83,7 +90,36 @@ CREATE TABLE `clientspace` (
 --
 
 INSERT INTO `clientspace` (`CS_ID`, `Space_ID`, `Client_ID`, `active`, `BusinessPhoto`, `BusinessPhoto1`, `BusinessPhoto2`, `BusinessPhoto3`, `BusinessPhoto4`, `BusinessPhoto5`) VALUES
-(65, 51, 30, 1, NULL, NULL, NULL, NULL, NULL, NULL);
+(68, 56, 32, 1, NULL, 'unit_56_client_32_689c2b5fc2d7d.jpg', NULL, NULL, NULL, NULL),
+(69, 55, 32, 1, NULL, NULL, NULL, NULL, NULL, NULL),
+(71, 54, 32, 1, NULL, NULL, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `free_message`
+--
+
+CREATE TABLE `free_message` (
+  `Message_ID` int(11) NOT NULL,
+  `Client_Name` varchar(255) NOT NULL,
+  `Client_Email` varchar(255) NOT NULL,
+  `Client_Phone` varchar(30) DEFAULT NULL,
+  `Message_Text` text NOT NULL,
+  `Sent_At` datetime DEFAULT current_timestamp(),
+  `is_deleted` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `free_message`
+--
+
+INSERT INTO `free_message` (`Message_ID`, `Client_Name`, `Client_Email`, `Client_Phone`, `Message_Text`, `Sent_At`, `is_deleted`) VALUES
+(1, 'Romeo Paolo', 'romeo@gmail.com', '096682532', 'tanga kaba', '2025-08-11 06:42:45', 1),
+(2, 'fawfa', 'romeopaolotolen@gmail.com', 'dwadwa', 'gago kaba', '2025-08-11 06:45:30', 1),
+(3, 'Prinz', 'djahdjahw@GMAIL.com', '09090', 'kupal', '2025-08-11 12:35:16', 1),
+(4, 'titi', 'romeo@gmail.com', '09090', 'adwadwa', '2025-08-13 13:55:07', 1),
+(5, 'sdadwa', 'dwadwa@gmail.com', '09090', 'adwadwa', '2025-08-14 01:01:45', 0);
 
 -- --------------------------------------------------------
 
@@ -133,8 +169,16 @@ CREATE TABLE `invoice` (
 --
 
 INSERT INTO `invoice` (`Invoice_ID`, `Client_ID`, `InvoiceDate`, `EndDate`, `InvoiceTotal`, `Status`, `Space_ID`, `Flow_Status`, `Chat_ID`) VALUES
-(1144, 30, '2025-08-10', NULL, 11000.00, 'paid', 51, 'done', NULL),
-(1145, 30, '2025-08-11', NULL, 11000.00, 'unpaid', 51, 'new', NULL);
+(1151, 32, '2025-08-10', '2025-09-10', 11000.00, 'paid', 56, 'done', NULL),
+(1152, 32, '2025-09-11', '2025-10-10', 11000.00, 'paid', 56, 'done', NULL),
+(1153, 32, '2025-08-10', '2025-08-15', 11000.00, 'paid', 55, 'done', NULL),
+(1154, 32, '2025-08-16', '2025-09-15', 11000.00, 'paid', 55, 'done', NULL),
+(1155, 32, '2025-08-10', '2025-08-10', 11000.00, 'kicked', 54, 'done', NULL),
+(1156, 32, '2025-10-11', '2025-11-10', 11000.00, 'paid', 56, 'done', NULL),
+(1157, 32, '2025-11-11', '2025-12-10', 11000.00, 'unpaid', 56, 'new', NULL),
+(1158, 32, '2025-08-12', '2025-08-15', 11000.00, 'paid', 54, 'done', NULL),
+(1159, 32, '2025-08-16', '2025-09-15', 11000.00, 'unpaid', 54, 'new', NULL),
+(1160, 32, '2025-09-16', '2025-10-15', 11000.00, 'unpaid', 55, 'new', NULL);
 
 -- --------------------------------------------------------
 
@@ -157,21 +201,42 @@ CREATE TABLE `invoice_chat` (
 --
 
 INSERT INTO `invoice_chat` (`Chat_ID`, `Invoice_ID`, `Sender_Type`, `Sender_ID`, `Message`, `Image_Path`, `Created_At`) VALUES
-(199, 1144, 'system', NULL, 'This rent has been PAID on 2025-08-09.', NULL, '2025-08-10 04:45:34'),
-(200, 1145, 'system', NULL, 'This rent has been PAID on 2025-08-09.', NULL, '2025-08-10 04:45:34'),
-(201, 1145, 'system', NULL, 'Conversation continued from previous invoice.', NULL, '2025-08-10 04:45:34');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `invoice_chat_seen`
---
-
-CREATE TABLE `invoice_chat_seen` ( wala na to  
-  `Client_ID` int(11) NOT NULL,
-  `Invoice_ID` int(11) NOT NULL,
-  `LastSeenMsg_ID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+(213, 1151, 'system', NULL, 'This rent has been PAID on 2025-08-09.', NULL, '2025-08-10 05:05:11'),
+(214, 1152, 'system', NULL, 'This rent has been PAID on 2025-08-09.', NULL, '2025-08-10 05:05:11'),
+(215, 1152, 'system', NULL, 'Conversation continued from previous invoice.', NULL, '2025-08-10 05:05:11'),
+(216, 1153, 'system', NULL, 'This rent has been PAID on 2025-08-09.', NULL, '2025-08-10 05:06:01'),
+(217, 1154, 'system', NULL, 'This rent has been PAID on 2025-08-09.', NULL, '2025-08-10 05:06:01'),
+(218, 1154, 'system', NULL, 'Conversation continued from previous invoice.', NULL, '2025-08-10 05:06:01'),
+(219, 1152, 'admin', 1, 'sup', NULL, '2025-08-11 06:48:32'),
+(220, 1152, 'client', 32, 'nigga what', NULL, '2025-08-11 06:48:41'),
+(221, 1152, 'system', NULL, 'This rent has been PAID on 2025-08-11.', NULL, '2025-08-11 12:38:20'),
+(222, 1156, 'system', NULL, 'This rent has been PAID on 2025-08-09.', NULL, '2025-08-10 05:05:11'),
+(223, 1156, 'system', NULL, 'Conversation continued from previous invoice.', NULL, '2025-08-10 05:05:11'),
+(224, 1156, 'admin', 1, 'sup', NULL, '2025-08-11 06:48:32'),
+(225, 1156, 'client', 32, 'nigga what', NULL, '2025-08-11 06:48:41'),
+(226, 1156, 'system', NULL, 'This rent has been PAID on 2025-08-11.', NULL, '2025-08-11 12:38:20'),
+(227, 1156, 'system', NULL, 'Conversation continued from previous invoice.', NULL, '2025-08-11 12:38:20'),
+(228, 1156, 'admin', 1, '', 'uploads/invoice_chat/1754955714_mark.jpg', '2025-08-12 07:41:54'),
+(229, 1156, 'system', NULL, 'This rent has been PAID on 2025-08-12.', NULL, '2025-08-12 07:58:07'),
+(230, 1157, 'system', NULL, 'This rent has been PAID on 2025-08-09.', NULL, '2025-08-10 05:05:11'),
+(231, 1157, 'system', NULL, 'Conversation continued from previous invoice.', NULL, '2025-08-10 05:05:11'),
+(232, 1157, 'admin', 1, 'sup', NULL, '2025-08-11 06:48:32'),
+(233, 1157, 'client', 32, 'nigga what', NULL, '2025-08-11 06:48:41'),
+(234, 1157, 'system', NULL, 'This rent has been PAID on 2025-08-11.', NULL, '2025-08-11 12:38:20'),
+(235, 1157, 'system', NULL, 'Conversation continued from previous invoice.', NULL, '2025-08-11 12:38:20'),
+(236, 1157, 'admin', 1, '', 'uploads/invoice_chat/1754955714_mark.jpg', '2025-08-12 07:41:54'),
+(237, 1157, 'system', NULL, 'This rent has been PAID on 2025-08-12.', NULL, '2025-08-12 07:58:07'),
+(238, 1157, 'system', NULL, 'Conversation continued from previous invoice.', NULL, '2025-08-12 07:58:07'),
+(239, 1158, 'system', NULL, 'This rent has been PAID on 2025-08-12.', NULL, '2025-08-12 08:22:50'),
+(240, 1159, 'system', NULL, 'This rent has been PAID on 2025-08-12.', NULL, '2025-08-12 08:22:50'),
+(241, 1159, 'system', NULL, 'Conversation continued from previous invoice.', NULL, '2025-08-12 08:22:50'),
+(242, 1154, 'system', NULL, 'This rent has been PAID on 2025-08-13.', NULL, '2025-08-13 14:06:33'),
+(243, 1160, 'system', NULL, 'This rent has been PAID on 2025-08-09.', NULL, '2025-08-10 05:06:01'),
+(244, 1160, 'system', NULL, 'Conversation continued from previous invoice.', NULL, '2025-08-10 05:06:01'),
+(245, 1160, 'system', NULL, 'This rent has been PAID on 2025-08-13.', NULL, '2025-08-13 14:06:33'),
+(246, 1160, 'system', NULL, 'Conversation continued from previous invoice.', NULL, '2025-08-13 14:06:33'),
+(247, 1157, 'client', 32, 'titi', NULL, '2025-08-14 01:00:31'),
+(248, 1157, 'client', 32, 'nigga', 'uploads/invoice_chat/1755104460_WIN_20250812_15_13_58_Pro.jpg', '2025-08-14 01:01:00');
 
 -- --------------------------------------------------------
 
@@ -199,6 +264,13 @@ CREATE TABLE `maintenancerequest` (
   `Status` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `maintenancerequest`
+--
+
+INSERT INTO `maintenancerequest` (`Request_ID`, `Client_ID`, `Space_ID`, `Handyman_ID`, `RequestDate`, `Status`) VALUES
+(1, 32, 56, NULL, '2025-08-12', 'In Progress');
+
 -- --------------------------------------------------------
 
 --
@@ -211,6 +283,14 @@ CREATE TABLE `maintenancerequeststatushistory` (
   `StatusChangeDate` date DEFAULT NULL,
   `NewStatus` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `maintenancerequeststatushistory`
+--
+
+INSERT INTO `maintenancerequeststatushistory` (`MRSH_ID`, `Request_ID`, `StatusChangeDate`, `NewStatus`) VALUES
+(1, 1, '2025-08-12', 'Submitted'),
+(2, 1, '2025-08-12', 'In Progress');
 
 -- --------------------------------------------------------
 
@@ -248,7 +328,10 @@ CREATE TABLE `rentalrequest` (
 --
 
 INSERT INTO `rentalrequest` (`Request_ID`, `Client_ID`, `Space_ID`, `StartDate`, `EndDate`, `Status`, `Flow_Status`, `Requested_At`) VALUES
-(1151, 30, 51, '2025-08-10', '2025-08-10', 'Accepted', 'done', '2025-08-10 04:45:13');
+(1154, 32, 56, '2025-08-10', '2025-09-10', 'Accepted', 'done', '2025-08-10 05:05:00'),
+(1155, 32, 55, '2025-08-10', '2025-08-15', 'Accepted', 'done', '2025-08-10 05:05:51'),
+(1156, 32, 54, '2025-08-10', '2025-08-10', 'Rejected', 'new', '2025-08-10 05:06:19'),
+(1157, 32, 54, '2025-08-12', '2025-08-15', 'Accepted', 'done', '2025-08-12 08:22:26');
 
 -- --------------------------------------------------------
 
@@ -274,7 +357,10 @@ CREATE TABLE `space` (
 --
 
 INSERT INTO `space` (`Space_ID`, `Name`, `SpaceType_ID`, `UA_ID`, `Street`, `Brgy`, `City`, `Photo`, `Price`, `Flow_Status`) VALUES
-(51, 'Space 1', 2, 1, 'General Luna Strt', '10', 'Lipa City', 'adminunit_1754772274.jpg', 11000.00, 'old');
+(54, 'Space 1', 2, 1, 'General Luna Strt', '10', 'Lipa City', 'adminunit_1754773420.jpg', 11000.00, 'old'),
+(55, 'Space 3', 2, 1, 'General Luna Strt', '10', 'Lipa City', 'adminunit_1754773441.jpg', 11000.00, 'old'),
+(56, 'Space 2', 2, 1, 'General Luna Strt', '10', 'Lipa City', 'adminunit_1754773459.jfif', 11000.00, 'old'),
+(57, 'Space 4', 2, 1, 'General Luna Strt', '10', 'Lipa City', 'adminunit_1754886853.jpg', 11000.00, 'new');
 
 -- --------------------------------------------------------
 
@@ -295,8 +381,14 @@ CREATE TABLE `spaceavailability` (
 --
 
 INSERT INTO `spaceavailability` (`Availability_ID`, `Space_ID`, `StartDate`, `EndDate`, `Status`) VALUES
-(170, 51, NULL, NULL, 'Available'),
-(171, 51, '2025-08-10', '2025-08-10', 'Occupied');
+(176, 54, NULL, NULL, 'Available'),
+(177, 55, NULL, NULL, 'Available'),
+(178, 56, NULL, NULL, 'Available'),
+(179, 56, '2025-08-10', '2025-09-10', 'Occupied'),
+(180, 55, '2025-08-10', '2025-08-15', 'Occupied'),
+(181, 54, '2025-08-10', '2025-08-10', 'Available'),
+(182, 57, NULL, NULL, 'Available'),
+(183, 54, '2025-08-12', '2025-08-15', 'Occupied');
 
 -- --------------------------------------------------------
 
@@ -337,7 +429,12 @@ CREATE TABLE `transaction` (
 --
 
 INSERT INTO `transaction` (`Transaction_ID`, `Space_ID`, `Invoice_ID`, `TransactionDate`, `Total_Amount`) VALUES
-(54, 51, 1144, '2025-08-10', 11000.00);
+(58, 56, 1151, '2025-08-10', 11000.00),
+(59, 55, 1153, '2025-08-10', 11000.00),
+(60, 56, 1152, '2025-08-11', 11000.00),
+(61, 56, 1156, '2025-08-12', 11000.00),
+(62, 54, 1158, '2025-08-12', 11000.00),
+(63, 55, 1154, '2025-08-13', 11000.00);
 
 -- --------------------------------------------------------
 
@@ -387,6 +484,12 @@ ALTER TABLE `clientspace`
   ADD KEY `Client_ID` (`Client_ID`);
 
 --
+-- Indexes for table `free_message`
+--
+ALTER TABLE `free_message`
+  ADD PRIMARY KEY (`Message_ID`);
+
+--
 -- Indexes for table `handyman`
 --
 ALTER TABLE `handyman`
@@ -416,12 +519,6 @@ ALTER TABLE `invoice`
 ALTER TABLE `invoice_chat`
   ADD PRIMARY KEY (`Chat_ID`),
   ADD KEY `Invoice_ID` (`Invoice_ID`);
-
---
--- Indexes for table `invoice_chat_seen`
---
-ALTER TABLE `invoice_chat_seen`
-  ADD PRIMARY KEY (`Client_ID`,`Invoice_ID`);
 
 --
 -- Indexes for table `jobtype`
@@ -503,19 +600,25 @@ ALTER TABLE `useraccounts`
 -- AUTO_INCREMENT for table `client`
 --
 ALTER TABLE `client`
-  MODIFY `Client_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `Client_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `clientfeedback`
 --
 ALTER TABLE `clientfeedback`
-  MODIFY `Feedback_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `Feedback_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `clientspace`
 --
 ALTER TABLE `clientspace`
-  MODIFY `CS_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `CS_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+
+--
+-- AUTO_INCREMENT for table `free_message`
+--
+ALTER TABLE `free_message`
+  MODIFY `Message_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `handyman`
@@ -533,13 +636,13 @@ ALTER TABLE `handymanjob`
 -- AUTO_INCREMENT for table `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `Invoice_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1146;
+  MODIFY `Invoice_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1161;
 
 --
 -- AUTO_INCREMENT for table `invoice_chat`
 --
 ALTER TABLE `invoice_chat`
-  MODIFY `Chat_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=202;
+  MODIFY `Chat_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=249;
 
 --
 -- AUTO_INCREMENT for table `jobtype`
@@ -551,13 +654,13 @@ ALTER TABLE `jobtype`
 -- AUTO_INCREMENT for table `maintenancerequest`
 --
 ALTER TABLE `maintenancerequest`
-  MODIFY `Request_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Request_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `maintenancerequeststatushistory`
 --
 ALTER TABLE `maintenancerequeststatushistory`
-  MODIFY `MRSH_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `MRSH_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `paymenthistory`
@@ -569,19 +672,19 @@ ALTER TABLE `paymenthistory`
 -- AUTO_INCREMENT for table `rentalrequest`
 --
 ALTER TABLE `rentalrequest`
-  MODIFY `Request_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1152;
+  MODIFY `Request_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1158;
 
 --
 -- AUTO_INCREMENT for table `space`
 --
 ALTER TABLE `space`
-  MODIFY `Space_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `Space_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `spaceavailability`
 --
 ALTER TABLE `spaceavailability`
-  MODIFY `Availability_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=172;
+  MODIFY `Availability_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=184;
 
 --
 -- AUTO_INCREMENT for table `spacetype`
@@ -593,7 +696,7 @@ ALTER TABLE `spacetype`
 -- AUTO_INCREMENT for table `transaction`
 --
 ALTER TABLE `transaction`
-  MODIFY `Transaction_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `Transaction_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `useraccounts`

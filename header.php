@@ -12,7 +12,6 @@ $invoice_alert_count = 0;
 if (isset($_SESSION['client_id'])) {
     $invoice_list = $db->getClientInvoiceHistory($_SESSION['client_id']);
     foreach ($invoice_list as $inv) {
-        // Count if unpaid or overdue (customize as needed)
         $due = isset($inv['InvoiceDate']) ? $inv['InvoiceDate'] : '';
         $is_unpaid = ($inv['Status'] === 'unpaid');
         $is_overdue = ($due && $inv['Status'] === 'unpaid' && strtotime($due) < strtotime(date('Y-m-d')));
@@ -22,7 +21,6 @@ if (isset($_SESSION['client_id'])) {
     }
 }
 
-// Flash message logic
 function display_flash_message($icon, $title, $message) {
     $safe_message = addslashes($message);
     echo "<script>
@@ -36,7 +34,6 @@ function display_flash_message($icon, $title, $message) {
           </script>";
 }
 
-// Handle various flash messages
 if (isset($_SESSION['login_error'])) {
     display_flash_message('error', 'Login Failed', $_SESSION['login_error']);
     unset($_SESSION['login_error']);
@@ -54,7 +51,6 @@ if (isset($_SESSION['register_error'])) {
     unset($_SESSION['register_error']);
 }
 
-// This line gets the current page's filename for active nav-link highlighting.
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-lg-3 py-lg-2 shadow-sm sticky-top">
@@ -155,7 +151,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
           </div>
           <div class="mb-4">
             <label class="form-label">Password</label>
-            <input type="password" class="form-control shadow-none" name="password" required>
+            <div class="input-group">
+              <input type="password" class="form-control shadow-none" name="password" id="login_password" required>
+              <span class="input-group-text" style="cursor:pointer;" onclick="togglePassword('login_password', this)">
+                <i class="fa fa-eye"></i>
+              </span>
+            </div>
           </div>
           <div class="d-flex align-items-center justify-content-between mb-2">
             <button type="submit" class="btn btn-dark shadow-none">LOGIN</button>
@@ -178,7 +179,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
           <button type="reset" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-         
           <div class="container-fluid">
             <div class="row">
               <div class="col-md-6 mb-3">
@@ -196,7 +196,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
               </div>
               <div class="col-md-6 mb-3">
                 <label class="form-label">Phone Number</label>
-                <input type="text" class="form-control shadow-none" name="phone" required>
+                <input type="text" class="form-control shadow-none" name="phone" id="reg_phone" maxlength="11" pattern="\d{11}" inputmode="numeric" required>
+                <div class="form-text text-muted">Must be 11 digits (numbers only, e.g., 09XXXXXXXXX)</div>
               </div>
               <div class="col-md-6 mb-3">
                 <label class="form-label">Username</label>
@@ -205,11 +206,22 @@ $current_page = basename($_SERVER['PHP_SELF']);
               </div>
               <div class="col-md-6 mb-3">
                 <label class="form-label">Password</label>
-                <input type="password" class="form-control shadow-none" name="password" required>
+                <div class="input-group">
+                  <input type="password" class="form-control shadow-none" name="password" id="reg_password" required>
+                  <span class="input-group-text" style="cursor:pointer;" onclick="togglePassword('reg_password', this)">
+                    <i class="fa fa-eye"></i>
+                  </span>
+                </div>
+                <div class="form-text text-muted">Must contain at least 1 uppercase and 1 special character.</div>
               </div>
               <div class="col-md-6 mb-3">
                 <label class="form-label">Confirm Password</label>
-                <input type="password" class="form-control shadow-none" name="confirm_password" required>
+                <div class="input-group">
+                  <input type="password" class="form-control shadow-none" name="confirm_password" id="reg_confirm_password" required>
+                  <span class="input-group-text" style="cursor:pointer;" onclick="togglePassword('reg_confirm_password', this)">
+                    <i class="fa fa-eye"></i>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -222,12 +234,24 @@ $current_page = basename($_SERVER['PHP_SELF']);
   </div>
 </div>
 
-<!-- Custom Style Enhancements (remains the same) -->
-<style>
-/* ... your styles ... */
-</style>
+<!-- FontAwesome CDN for eye icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <script>
+function togglePassword(inputId, iconSpan) {
+  var input = document.getElementById(inputId);
+  var icon = iconSpan.querySelector('i');
+  if (input.type === "password") {
+    input.type = "text";
+    icon.classList.remove("fa-eye");
+    icon.classList.add("fa-eye-slash");
+  } else {
+    input.type = "password";
+    icon.classList.remove("fa-eye-slash");
+    icon.classList.add("fa-eye");
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   // Registration validation for email
   const reg_email = document.getElementById('reg_email');
@@ -266,13 +290,28 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
+
+  // Phone number input validation for 11 digits and numbers only
+  var phoneInput = document.getElementById('reg_phone');
+  if (phoneInput) {
+    phoneInput.addEventListener('input', function() {
+      this.value = this.value.replace(/\D/g, '').slice(0, 11);
+    });
+  }
 });
 
 // This function prevents form submission if the server-side validation has found an error.
 function checkRegisterForm() {
   var emailMsg = document.getElementById('email_msg').textContent;
   var usernameMsg = document.getElementById('username_msg').textContent;
+  var phoneInput = document.getElementById('reg_phone');
   if(emailMsg || usernameMsg) {
+    return false;
+  }
+  // Additional client-side check: must be 11 digits
+  if(phoneInput && phoneInput.value.length !== 11) {
+    alert("Phone number must be exactly 11 digits.");
+    phoneInput.focus();
     return false;
   }
   return true;
